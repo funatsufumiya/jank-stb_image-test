@@ -6,8 +6,7 @@
   :middleware [leiningen.jank/middleware]
   :main jank-stb-image-test.main
   :jank {:include-dirs ["native-lib"]
-         :library-dirs ["native-lib"]
-         :linked-libraries ["mystbimage"]}
+         :library-dirs ["native-lib"]}
   :profiles {:base {:jank {:output-dir "target/debug"
                            :optimization-level 0}}
              :release {:jank {:output-dir "target/release"
