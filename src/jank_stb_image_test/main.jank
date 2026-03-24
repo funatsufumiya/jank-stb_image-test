@@ -2,13 +2,11 @@
 
 (cpp/raw "#include <my_stb_image.h>")
 
-
 (defn -main [& args]
   (let [width (cpp/int)
           height (cpp/int)
           channel-count (cpp/int)
-          image (cpp/my_stbi_load "horse-0.png" (cpp/& width) (cpp/& height) (cpp/& channel-count) 0)
-          ]
+          image (cpp/my_stbi_load "horse-0.png" (cpp/& width) (cpp/& height) (cpp/& channel-count) 0)]
       
       (when (cpp/== cpp/nullptr image)
         (throw (ex-info "Error: Could not load image\n" {})))
