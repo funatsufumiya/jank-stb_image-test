@@ -72,14 +72,14 @@ static __inline void emutls_memalign_free(void *base) {
   free(base);
 #else
   // The mallocated address is in ((void**)base)[-1]
-  free(ptr: ((void **)base)[-1]);
+  free(((void **)base)[-1]);
 #endif
 }
 static __inline void emutls_setspecific(emutls_address_array *value) {
-  pthread_setspecific(key: emutls_pthread_key, pointer: (void *)value);
+  pthread_setspecific(emutls_pthread_key, (void *)value);
 }
 static __inline emutls_address_array *emutls_getspecific(void) {
-  return (emutls_address_array *)pthread_getspecific(key: emutls_pthread_key);
+  return (emutls_address_array *)pthread_getspecific(emutls_pthread_key);
 }
 static void emutls_key_destructor(void *ptr) {
   emutls_address_array *array = (emutls_address_array *)ptr;
@@ -91,23 +91,23 @@ static void emutls_key_destructor(void *ptr) {
     // cleanup tasks like calling thread_local destructors (e.g. the
     // __cxa_thread_atexit fallback in libc++abi).
     array->skip_destructor_rounds--;
-    emutls_setspecific(value: array);
+    emutls_setspecific(array);
   } else {
     emutls_shutdown(array);
-    free(ptr: ptr);
+    free(ptr);
   }
 }
 static __inline void emutls_init(void) {
-  if (pthread_key_create(key: &emutls_pthread_key, destr_function: emutls_key_destructor) != 0)
+  if (pthread_key_create(&emutls_pthread_key, emutls_key_destructor) != 0)
     abort();
   emutls_key_created = true;
 }
 static __inline void emutls_init_once(void) {
   static pthread_once_t once = PTHREAD_ONCE_INIT;
-  pthread_once(once_control: &once, init_routine: emutls_init);
+  pthread_once(&once, emutls_init);
 }
-static __inline void emutls_lock(void) { pthread_mutex_lock(mutex: &emutls_mutex); }
-static __inline void emutls_unlock(void) { pthread_mutex_unlock(mutex: &emutls_mutex); }
+static __inline void emutls_lock(void) { pthread_mutex_lock(&emutls_mutex); }
+static __inline void emutls_unlock(void) { pthread_mutex_unlock(&emutls_mutex); }
 #else // _WIN32
 #include <assert.h>
 #include <malloc.h>
