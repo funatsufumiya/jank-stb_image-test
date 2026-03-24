@@ -17,7 +17,7 @@ $ cd native-lib
 $ clang++ -shared -o libmystbimage.dll -lz my_stb_image.cpp
 
 # Linux.
-# $ clang++ -shared -o libmystbimage.so -lz my_stb_image.cpp
+# $ clang++ -shared -o libmystbimage.so -fPIC -lz my_stb_image.cpp
 
 # macOS.
 # $ clang++ -shared -o libmystbimage.dylib -lz my_stb_image.cpp
