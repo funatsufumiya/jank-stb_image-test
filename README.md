@@ -1,4 +1,4 @@
-# jank-std_image-test
+# jank std_image test
 
 Based on https://gist.github.com/keychera/b20d97e0f4ae3824b547650f4884e729, and https://book.jank-lang.org/cpp-interop/native-libs.html
 
